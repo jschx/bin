@@ -1,0 +1,6 @@
+#!/usr/bin/env dash
+# notify - display notifications in lemonbar
+
+. ~/.config/lime/lime.conf
+
+(echo "%{c}${@}"; sleep "${duration}") | lemonbar -g x"${height}"+0+"${height}" -d -f "${font}" -B "${nbg}" -F "${nfg}"

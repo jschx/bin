@@ -1,0 +1,26 @@
+#!/bin/sh
+# ckup - check for new openbsd version and download new sets
+
+arch="$(sysctl -n hw.machine)"
+directory="${HOME}/.$(basename ${0})"
+mirror='ftp://ftp3.usa.openbsd.org/pub/OpenBSD'
+version='snapshots'
+url="${mirror}/${version}/${arch}"
+
+if [ ! -e "${directory}" ]; then
+	mkdir -p "${directory}"
+fi
+
+cd "${directory}"
+
+ftp -ia -o "${directory}"/SHA256.new "${url}"/SHA256
+
+if cmp -s "${directory}"/SHA256 "${directory}"/SHA256.new; then
+	rm "${directory}"/SHA256.new
+	echo 'No changes.'
+else
+	mv "${directory}"/SHA256.new "${directory}"/SHA256
+	ftp -ia "${url}"/{INSTALL*,SHA256.sig,*tgz,bsd*}
+	doas cp "${directory}"/bsd.rd /bsd.rd
+	echo "bsd.rd updated, sets downloaded to ${directory}"
+fi

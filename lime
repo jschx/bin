@@ -1,0 +1,10 @@
+#!/usr/bin/env dash
+# lime - (re)starts lemonbar
+
+. ~/.config/lime/lime.conf
+
+pkill admiral
+pkill lemonbar
+
+admiral | lemonbar -g x"${height}" -d -f "${font}" -p -B "${bg}" -F "${fg}" | sh &
+echo | lemonbar -g x"${border}"+0+"${height}" -d -p -B "${bordercolor}" &

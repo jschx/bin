@@ -1,0 +1,29 @@
+#!/bin/sh
+# cmc - mpc-like wrapper for cmus
+
+case "${1}" in
+  play)
+    # Start playing
+    cmus-remote -p
+    exit ;;
+  toggle)
+    # Toggle pause
+    cmus-remote -u
+    exit ;;
+  stop)
+    # Stop playing
+    cmus-remote -s
+    exit ;;
+  next)
+    # Skip forward in playlist
+    cmus-remote -n
+    exit ;;
+  prev)
+    # Skip backward in playlist
+    cmus-remote -r
+    exit ;;
+  *)
+    # Get player status information
+    cmus-remote -Q
+    exit ;;
+esac
