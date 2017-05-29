@@ -13,14 +13,15 @@ fi
 
 cd "${directory}"
 
-ftp -ia -o "${directory}"/SHA256.new "${url}"/SHA256
+ftp -aiMVo "${directory}"/SHA256.new "${url}"/SHA256
 
 if cmp -s "${directory}"/SHA256 "${directory}"/SHA256.new; then
 	rm "${directory}"/SHA256.new
 	echo 'No changes.'
 else
+	echo 'Updates found. Downloading new sets...'
 	mv "${directory}"/SHA256.new "${directory}"/SHA256
-	ftp -ia "${url}"/{INSTALL*,SHA256.sig,*tgz,bsd*}
+	ftp -aiV "${url}"/{INSTALL*,SHA256.sig,*tgz,bsd*}
 	doas cp "${directory}"/bsd.rd /bsd.rd
-	echo "bsd.rd updated, sets downloaded to ${directory}"
+	echo "/bsd.rd updated; new sets downloaded to ${directory}."
 fi
